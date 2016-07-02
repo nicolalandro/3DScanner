@@ -35,6 +35,7 @@ public void buttonStart(GButton source, GEvent event) { //_CODE_:button1:731800:
     cam.stop();
     cam = new Capture(this, cameras[dropListCamera.getSelectedIndex()]);
     cam.start();
+    createWindowCamera();
     
     createWindow();
     
