@@ -4,6 +4,7 @@ import processing.video.*;
 import processing.serial.*;
 import javax.swing.JOptionPane; 
 
+PApplet wantedThis;
 Serial arduinoPort;
 Capture cam;
 String[] cameras;
@@ -17,7 +18,13 @@ public void writeList(String name, String[] list){
    out.close();
 }
 
+public Serial createArduino(int index){
+  return new Serial(wantedThis, Serial.list()[index],9600); //Non va perche vuole la PPAplet non "this"
+}
+
 public void setup(){
+  wantedThis = this;
+  arduinoPort = new Serial(this, Serial.list()[(Serial.list()).length-1],9600);
   //obtain camera list
   cameras = Capture.list();
   //write list
@@ -54,17 +61,15 @@ void fileSelected(File selection) {
 
 public void acquire(){
   arduinoPort.write(1); //accendi il laser
-  arduinoPort.write(1);
-  arduinoPort.write(1);
-  arduinoPort.write(1);
-  arduinoPort.write(1);
-  for(int i=0;i<48;i++){
-    stateElaborating+=10; //aggiorna barra di caricamento
-    saveImageFromCam(textfield1.getText()+"/image"+i+".jpg");
-    arduinoPort.write(2); // uno step per il motore stepper
-    try{
-      Thread.sleep(80);
-    }catch(InterruptedException e){
+  for(int j=0;j<3;j++){
+    for(int i=0;i<48;i++){
+      stateElaborating+=10; //aggiorna barra di caricamento
+      saveImageFromCam(textfield1.getText()+"/image"+i+".jpg");
+      arduinoPort.write(2); // uno step per il motore stepper
+      try{
+        Thread.sleep(80);
+      }catch(InterruptedException e){
+      }
     }
   }
   arduinoPort.write(0); //spegni il laser

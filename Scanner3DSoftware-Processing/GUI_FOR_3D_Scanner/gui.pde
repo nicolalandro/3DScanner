@@ -31,7 +31,8 @@ public void buttonStart(GButton source, GEvent event) { //_CODE_:button1:731800:
   //saveImageFromCam(textfield1.getText()+"/file_name.jpg");
   //testCharging();
   try{
-    arduinoPort = new Serial(this, Serial.list()[dropListArdu.getSelectedIndex()],9600);
+    //arduinoPort = new Serial(this, Serial.list()[dropListArdu.getSelectedIndex()],9600);
+    //arduinoPort = createArduino(dropListArdu.getSelectedIndex());
     cam.stop();
     cam = new Capture(this, cameras[dropListCamera.getSelectedIndex()]);
     cam.start();
@@ -44,6 +45,7 @@ public void buttonStart(GButton source, GEvent event) { //_CODE_:button1:731800:
     work();
   }
   catch(Exception e){
+    println(e);
      JOptionPane.showMessageDialog(null, "Arduino or Camera are not set correctly", "Error", JOptionPane.ERROR_MESSAGE);  
   }
   
